@@ -21,9 +21,9 @@ namespace TicTacToeServerSide.Services
         public static void Start()
         {
             Console.Title = "Server";
-           
-                SetupServer();
-            
+
+            SetupServer();
+
             Console.ReadLine();
             CloseAllSockets();
         }
@@ -41,12 +41,22 @@ namespace TicTacToeServerSide.Services
         private static void SetupServer()
         {
             Console.WriteLine("Setting up server . . . ");
-            serverSocket.Bind(new IPEndPoint(IPAddress.Parse("10.2.13.15"), PORT));
-            serverSocket.Listen(2);
+            try
+            {
+
+                serverSocket.Bind(new IPEndPoint(IPAddress.Parse(NetWorkHelper.GetLocalIpAddress()), PORT));
+                serverSocket.Listen(2);
+                Console.WriteLine("Server Is Running");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             while (true)
             {
-            serverSocket.BeginAccept(AcceptCallBack, null);
-
+                
+                serverSocket.BeginAccept(AcceptCallBack, null);
+                Console.WriteLine("Waiting For User");
             }
         }
 
@@ -55,6 +65,7 @@ namespace TicTacToeServerSide.Services
             Socket socket = null;
             try
             {
+                
                 socket = serverSocket.EndAccept(ar);
             }
             catch (Exception)
