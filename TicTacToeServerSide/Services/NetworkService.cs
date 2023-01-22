@@ -56,7 +56,6 @@ namespace TicTacToeServerSide.Services
             {
                 
                 serverSocket.BeginAccept(AcceptCallBack, null);
-                Console.WriteLine("Waiting For User");
             }
         }
 
@@ -65,7 +64,8 @@ namespace TicTacToeServerSide.Services
             Socket socket = null;
             try
             {
-                
+               
+
                 socket = serverSocket.EndAccept(ar);
             }
             catch (Exception)
